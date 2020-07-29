@@ -108,7 +108,31 @@ class Server{
         });
 
     // aqui empiza la parte de la comparacion de rostros por rekognition
-    });    
+    const similarity = 65;//porcentaje de similitud
+    const usuario = body.usuario;
+    
+    const params = {
+        TableName: "grupo"
+    };
+    
+    const params2 = {
+        TableName: "estudiante"
+    };
+    try{
+        festudiantes(params2);
+    }catch(ex){
+        return {
+            error: true,
+            message: "Error al obtener las informacion del usuario",
+        };
+    }
+    });
+async function festudiantes(params:any){
+            var datos  = [];
+            const obj = await documentClient.scan(params).promise();
+            const arr2 = obj['Items'];
+            console.log(arr2);
+}    
 //***************************CARGAR FOTOS NUEVAS*****************************/
     this.app.post('/registro', (req, res) => {
         let body = req.body;

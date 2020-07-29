@@ -1,3 +1,9 @@
+<div *ngIf="mensaje" class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Agregado corectamente:</strong> Se agregó un estudiante nuevo
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="onClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="row">
   <div class="col-md-4 offset-md-2">
     <div class="card">
@@ -9,29 +15,38 @@
       <div class="cardbody">
           <form>
             <div class="form-group">
-              <input name="nombre" placeholder="Nombre" class="form-control"autofocus>
+              <input name="nombre" placeholder="Nombre" class="form-control"autofocus [(ngModel)]="user">
             </div>
             <div class="form-group">
               <label class="file">
-                <img id="image" style="height: 70%; width: 70%; margin: 0 auto"/>
+                <img *ngIf="!showSelector" id="image" style="height: 70%; width: 70%; margin: 0 auto"/>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeImage()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
                 <input type="file" id="file" aria-label="File browser example" (change)="changeListener($event)"/>
                 <span class="file-custom"></span>
               </label>
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-success" (click)="Agregar()">Agregar</button>
+              <button type="button" class="btn btn-success" (click)="showPhotos()">Show</button>
             </div>
           </form>
       </div>
     </div>
   </div>
-  <div class="col-md-4" *ngFor="">
+</div>
+<div class="row">
+  <div class="col-md-4" *ngFor="let image of Imagen">
     <div class="card text-center">
         <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
           <p>
-              Nombre
+              {{image.nombre}}
           </p>
         </div>
         <div class="card-body">
-            <img src="" style="height: 70%; width: 70%; margin: 0 auto"/>
+            <img src="{{image.Imagen}}" style="height: 35%; width: 35%; margin: 0 auto"/>
         </div>
     </div>
-</div>
+  </div>
 </div>

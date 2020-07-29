@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { estudiante } from 'src/app/models/estudiantes';
+import { Images } from 'src/app/models/images';
+import { EstudiantesService } from 'src/app/service/estudiantes.service';
 
 @Component({
   selector: 'app-estudiantes',
@@ -10,12 +13,66 @@ export class EstudiantesComponent implements OnInit {
   file;
   name: string;
   showSelector = true;
-
-  constructor() { }
+  imge:Images;
+  Imagen:Images[];
+  objetos:any=[];
+  mensaje:boolean=false;
+  estudiante:estudiante={
+    nombre: '',
+    name: '',
+    base64: '',
+    extension: ''
+  }
+  constructor(private estudianteservice: EstudiantesService) { }
 
   ngOnInit() {
+    this.showPhotos();
   }
 
+  onClose(){
+    this.mensaje=false;
+  }
+  Agregar(){
+    this.estudiante.nombre=this.user;
+    console.log(this.estudiante);
+    this.estudianteservice.datos(this.estudiante).subscribe(
+      (res : {message}) => {
+        console.log(res)
+        this.mensaje=true;
+        this.showPhotos();
+      },
+      error => console.error(error)
+  )
+  }
+  showPhotos(){
+    this.estudianteservice.getStudents().subscribe(
+      res=>{
+        this.objetos=res;
+        this.RecorrerImagenes();
+      },
+      error=>{
+        console.log(error);
+      }
+    )
+  }
+  RecorrerImagenes(){
+    var datos =[];
+    for (const prop in this.objetos) {
+      const tempo = this.objetos[prop];
+      for(const a in tempo){
+       const direccion =tempo[a].Imagen;
+       const nombres = tempo[a].nombre;
+       console.log(direccion);
+       datos.push({
+        "nombre":nombres,
+        "Imagen": direccion
+       });
+      }
+      this.Imagen=datos;
+      //console.log(datos);
+  }
+
+}
   changeListener($event) : void {
     this.showSelector = false
     this.file = $event.target.files[0];
@@ -30,6 +87,9 @@ export class EstudiantesComponent implements OnInit {
       this.base64 = reader.result as string;
       this.base64 = this.base64.split(',')[1];
       this.extension = newFile.name.split('.')[1];
+      this.estudiante.base64=this.base64;
+      this.estudiante.extension=this.extension;
+      this.estudiante.name=this.name;
       //console.log(this.base64)
       this.chargeImage(this.base64, this.extension)
     }

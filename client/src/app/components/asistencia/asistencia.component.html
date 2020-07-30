@@ -1,1 +1,11 @@
-<p>asistencia works!</p>
+<div class="row">
+  <div class="col-md-4" *ngFor="let image of Imagen">
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src="{{image.Imagen}}" style="height: 35%; width: 35%; margin: 0 auto"/>
+      <div class="card-body">
+        <p class="card-text">Codigo: {{image.nombre}}</p> <br>
+        <p class="card-text">Asistio: {{image.Asistencia}}</p>
+      </div>
+    </div>
+  </div>
+</div>

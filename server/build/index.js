@@ -49,6 +49,8 @@ var s3 = new aws_sdk_1.default.S3(aws_keys.s3);
 var ddb = new aws_sdk_1.default.DynamoDB(aws_keys.dynamodb);
 var rekognition = new aws_sdk_1.default.Rekognition(aws_keys.rekognition);
 var documentClient = new aws_sdk_1.default.DynamoDB.DocumentClient({ service: ddb });
+var datos = [];
+var id = 0;
 var Server = /** @class */ (function () {
     function Server() {
         this.app = express_1.default();
@@ -69,6 +71,58 @@ var Server = /** @class */ (function () {
             var imagenes = [];
             var params = {
                 TableName: "estudiante",
+            };
+            var obj = documentClient.scan(params, function (err, data) {
+                if (err) {
+                    console.log(err);
+                    res.send({
+                        success: false,
+                        message: 'Error: Server error'
+                    });
+                }
+                else {
+                    var Items = data.Items;
+                    console.log("items");
+                    var arr = Items;
+                    console.log(Items);
+                    var json = {
+                        Items: Items
+                    };
+                    return res.json(json);
+                }
+            });
+        });
+        /*********************Get Asist***********************/
+        this.app.get('/gasist', function (req, res) {
+            var imagenes = [];
+            var params = {
+                TableName: "asistencia",
+            };
+            var obj = documentClient.scan(params, function (err, data) {
+                if (err) {
+                    console.log(err);
+                    res.send({
+                        success: false,
+                        message: 'Error: Server error'
+                    });
+                }
+                else {
+                    var Items = data.Items;
+                    console.log("items");
+                    var arr = Items;
+                    console.log(Items);
+                    var json = {
+                        Items: Items
+                    };
+                    return res.json(json);
+                }
+            });
+        });
+        /*********************Get Fotos***********************/
+        this.app.get('/fotos2', function (req, res) {
+            var imagenes = [];
+            var params = {
+                TableName: "grupo",
             };
             var obj = documentClient.scan(params, function (err, data) {
                 if (err) {
@@ -139,37 +193,207 @@ var Server = /** @class */ (function () {
                 }
             });
             // aqui empiza la parte de la comparacion de rostros por rekognition
-            var similarity = 65; //porcentaje de similitud
-            var usuario = body.usuario;
-            var params = {
-                TableName: "grupo"
+            var a = {
+                mensaje: "exito"
             };
-            var params2 = {
-                TableName: "estudiante"
-            };
-            try {
-                festudiantes(params2);
-            }
-            catch (ex) {
-                return {
-                    error: true,
-                    message: "Error al obtener las informacion del usuario",
-                };
-            }
+            return res.json(a);
         });
-        function festudiantes(params) {
+        this.app.get('/grupoasist2', function (req, res) {
+            try {
+                var params = {
+                    TableName: "grupo"
+                };
+                var params2 = {
+                    TableName: "estudiante"
+                };
+                festudiantes(params2, params);
+            }
+            catch (e) {
+                console.log("error", e);
+            }
+            var a = {
+                mensaje: "ingreso correcto"
+            };
+            return res.json(a);
+        });
+        function festudiantes(params, params2) {
             return __awaiter(this, void 0, void 0, function () {
-                var datos, obj, arr2;
+                var params2_1, params_1, obj, arr2, obj2, arr1, e_1;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            datos = [];
-                            return [4 /*yield*/, documentClient.scan(params).promise()];
+                            _a.trys.push([0, 3, , 4]);
+                            params2_1 = {
+                                TableName: "grupo"
+                            };
+                            params_1 = {
+                                TableName: "estudiante"
+                            };
+                            return [4 /*yield*/, documentClient.scan(params_1).promise()];
                         case 1:
                             obj = _a.sent();
                             arr2 = obj['Items'];
-                            console.log(arr2);
-                            return [2 /*return*/];
+                            return [4 /*yield*/, documentClient.scan(params2_1).promise()];
+                        case 2:
+                            obj2 = _a.sent();
+                            arr1 = obj2['Items'];
+                            reconocimiento(arr2, arr1);
+                            return [3 /*break*/, 4];
+                        case 3:
+                            e_1 = _a.sent();
+                            console.log("error", e_1);
+                            return [3 /*break*/, 4];
+                        case 4: return [2 /*return*/];
+                    }
+                });
+            });
+        }
+        function reconocimiento(arreglo1, arreglo2) {
+            return __awaiter(this, void 0, void 0, function () {
+                var _loop_1, _a, _b, _i, i;
+                return __generator(this, function (_c) {
+                    switch (_c.label) {
+                        case 0:
+                            console.log("inicio de reconocimiento");
+                            console.log("arreglo 1", arreglo1);
+                            console.log("arreglo 2", arreglo2);
+                            _loop_1 = function (i) {
+                                var _loop_2, _a, _b, _i, j;
+                                return __generator(this, function (_c) {
+                                    switch (_c.label) {
+                                        case 0:
+                                            _loop_2 = function (j) {
+                                                return __generator(this, function (_a) {
+                                                    switch (_a.label) {
+                                                        case 0: return [4 /*yield*/, new Promise(function (next) {
+                                                                var direc = arreglo1[i].Imagen;
+                                                                var iden = arreglo1[j].nombre;
+                                                                var espacios = direc.split('/');
+                                                                //console.log(espacios);
+                                                                var foto_comparar = espacios[3] + "/" + espacios[4];
+                                                                var direc2 = arreglo2[j].Imagen;
+                                                                var nombre = arreglo2[j].nombre;
+                                                                console.log(foto_comparar);
+                                                                var espacios2 = direc2.split('/');
+                                                                var foto_comparar2 = espacios2[3] + "/" + espacios2[4];
+                                                                console.log(foto_comparar2);
+                                                                var datosrekognition = {
+                                                                    SimilarityThreshold: 65,
+                                                                    SourceImage: {
+                                                                        S3Object: {
+                                                                            Bucket: "bucketfotos-201503608-sufis",
+                                                                            Name: foto_comparar2
+                                                                        }
+                                                                    },
+                                                                    TargetImage: {
+                                                                        S3Object: {
+                                                                            Bucket: "bucketfotos-201503608-sufis",
+                                                                            Name: foto_comparar
+                                                                        }
+                                                                    }
+                                                                };
+                                                                debugger;
+                                                                rekognition.compareFaces(datosrekognition, function (err, data) {
+                                                                    if (err) {
+                                                                        console.log("Rekognition error ", err);
+                                                                    }
+                                                                    else {
+                                                                        if (Object.keys(data['FaceMatches']).length === 0) {
+                                                                            console.log("no coinciden");
+                                                                            var parametro = {
+                                                                                TableName: "asistencia",
+                                                                                Item: {
+                                                                                    "Asistencia": "no",
+                                                                                    "Imagen": direc,
+                                                                                    "nombre": nombre,
+                                                                                    "id": id
+                                                                                }
+                                                                            };
+                                                                            id++;
+                                                                            documentClient.put(parametro, function (err, data) {
+                                                                                if (err) {
+                                                                                    console.log('error', err);
+                                                                                }
+                                                                                else {
+                                                                                    console.log('data', data);
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                        else {
+                                                                            var valor = data['FaceMatches'][0].Similarity;
+                                                                            if (valor >= 65) {
+                                                                                datos.push({
+                                                                                    "Imagen": direc,
+                                                                                });
+                                                                                console.log("Reconocida");
+                                                                                var parametro = {
+                                                                                    TableName: "asistencia",
+                                                                                    Item: {
+                                                                                        "Asistencia": "si",
+                                                                                        "Imagen": direc,
+                                                                                        "nombre": nombre,
+                                                                                        "id": id
+                                                                                    }
+                                                                                };
+                                                                                id++;
+                                                                                documentClient.put(parametro, function (err, data) {
+                                                                                    if (err) {
+                                                                                        console.log('error', err);
+                                                                                    }
+                                                                                    else {
+                                                                                        console.log('data', data);
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                            else {
+                                                                                console.log("No Reconocida");
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+                                                                next();
+                                                            })];
+                                                        case 1:
+                                                            _a.sent();
+                                                            return [2 /*return*/];
+                                                    }
+                                                });
+                                            };
+                                            _a = [];
+                                            for (_b in arreglo2)
+                                                _a.push(_b);
+                                            _i = 0;
+                                            _c.label = 1;
+                                        case 1:
+                                            if (!(_i < _a.length)) return [3 /*break*/, 4];
+                                            j = _a[_i];
+                                            return [5 /*yield**/, _loop_2(j)];
+                                        case 2:
+                                            _c.sent();
+                                            _c.label = 3;
+                                        case 3:
+                                            _i++;
+                                            return [3 /*break*/, 1];
+                                        case 4: return [2 /*return*/];
+                                    }
+                                });
+                            };
+                            _a = [];
+                            for (_b in arreglo1)
+                                _a.push(_b);
+                            _i = 0;
+                            _c.label = 1;
+                        case 1:
+                            if (!(_i < _a.length)) return [3 /*break*/, 4];
+                            i = _a[_i];
+                            return [5 /*yield**/, _loop_1(i)];
+                        case 2:
+                            _c.sent();
+                            _c.label = 3;
+                        case 3:
+                            _i++;
+                            return [3 /*break*/, 1];
+                        case 4: return [2 /*return*/];
                     }
                 });
             });

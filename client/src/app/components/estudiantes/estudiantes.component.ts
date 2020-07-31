@@ -39,10 +39,10 @@ export class EstudiantesComponent implements OnInit {
       (res : {message}) => {
         console.log(res)
         this.mensaje=true;
-        this.showPhotos();
       },
       error => console.error(error)
-  )
+  );
+  this.showPhotos();
   }
   showPhotos(){
     this.estudianteservice.getStudents().subscribe(

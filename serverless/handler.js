@@ -37,7 +37,7 @@ module.exports.hello = async event => {
     const params2 = {
         TableName: "estudiante"
     };
-        festudiantes(params2,params);
+        //festudiantes(params2,params);
         return {
             datos:datos,
             mensaje:JSON.stringify("Listo")

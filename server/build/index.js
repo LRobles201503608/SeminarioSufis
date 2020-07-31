@@ -193,10 +193,6 @@ var Server = /** @class */ (function () {
                 }
             });
             // aqui empiza la parte de la comparacion de rostros por rekognition
-            var a = {
-                mensaje: "exito"
-            };
-            return res.json(a);
         });
         this.app.get('/grupoasist2', function (req, res) {
             try {
@@ -267,7 +263,6 @@ var Server = /** @class */ (function () {
                                                     switch (_a.label) {
                                                         case 0: return [4 /*yield*/, new Promise(function (next) {
                                                                 var direc = arreglo1[i].Imagen;
-                                                                var iden = arreglo1[j].nombre;
                                                                 var espacios = direc.split('/');
                                                                 //console.log(espacios);
                                                                 var foto_comparar = espacios[3] + "/" + espacios[4];

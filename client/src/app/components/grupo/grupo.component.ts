@@ -28,6 +28,9 @@ export class GrupoComponent implements OnInit {
   ngOnInit() {
     this.showPhotos();
   }
+  onClose(){
+    this.mensaje=false;
+  }
   Agregar(){
     this.estudiante.nombre=this.user;
     console.log(this.estudiante);
@@ -35,11 +38,11 @@ export class GrupoComponent implements OnInit {
       (res : {message}) => {
         console.log(res)
         this.mensaje=true;
-        this.showPhotos();
       },
       error => console.error(error)
   );
-  //this.compare2();
+  this.showPhotos();
+  this.compare();
   }
   compare2(){
     /*this.gruposervice.compare2().subscribe(

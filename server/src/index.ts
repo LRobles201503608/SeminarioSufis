@@ -164,10 +164,7 @@ this.app.get('/fotos2',(req,res)=>{
         });
 
     // aqui empiza la parte de la comparacion de rostros por rekognition
-    var a={
-        mensaje:"exito"
-    }
-    return res.json(a);
+    
     });
     this.app.get('/grupoasist2',(req,res)=>{
         try{
@@ -215,7 +212,7 @@ async function reconocimiento(arreglo1:any,arreglo2:any){
         for (let j in arreglo2){
                 await new Promise(next=>{
                     const direc = arreglo1[i].Imagen
-                    const iden = arreglo1[j].nombre; 
+                    
                     var espacios = direc.split('/')
                     //console.log(espacios);
                     const foto_comparar = espacios[3]+"/"+espacios[4]

@@ -8,5 +8,5 @@ functions:
     handler: handler.hello
     events:
      - http:
-        path: take/asist
+        path: asist
         method: get

@@ -50,7 +50,7 @@ var ddb = new aws_sdk_1.default.DynamoDB(aws_keys.dynamodb);
 var rekognition = new aws_sdk_1.default.Rekognition(aws_keys.rekognition);
 var documentClient = new aws_sdk_1.default.DynamoDB.DocumentClient({ service: ddb });
 var datos = [];
-var id = 400;
+var id = 0;
 var Server = /** @class */ (function () {
     function Server() {
         this.app = express_1.default();

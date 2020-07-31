@@ -12,7 +12,7 @@ const ddb = new AWS.DynamoDB(aws_keys.dynamodb);
 const rekognition = new AWS.Rekognition(aws_keys.rekognition);
 const documentClient = new AWS.DynamoDB.DocumentClient({ service: ddb });
 var datos:any  = [];
-var id:number=400;
+var id:number=0;
 
 class Server{
 

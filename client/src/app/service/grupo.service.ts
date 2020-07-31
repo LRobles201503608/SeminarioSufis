@@ -6,8 +6,8 @@ import { grupo } from '../models/grupos';
   providedIn: 'root'
 })
 export class GrupoService {
-  //private API = 'http://18.216.43.249:3000';
-  private API = 'http://localhost:3000';
+  private API = 'http://18.216.43.249:3000';
+  //private API = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
   getStudents(){
     return this.http.get(`${this.API}/fotos2`);
@@ -24,6 +24,6 @@ export class GrupoService {
     return this.http.get(`${this.API}/grupoasist2`);
   }
   getAsist(){
-    return this.http.get(`${this.API}/gasist`);
+    return this.http.get(`https://nagowpasw9.execute-api.us-east-1.amazonaws.com/live/`);
   }
 }

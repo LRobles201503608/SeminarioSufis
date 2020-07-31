@@ -6,7 +6,7 @@ import { grupo } from '../models/grupos';
   providedIn: 'root'
 })
 export class GrupoService {
-  private API = 'http://18.216.43.249:4100';
+  private API = 'http://18.216.43.249:4400';
   //private API = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
   getStudents(){

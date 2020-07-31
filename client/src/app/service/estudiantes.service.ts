@@ -6,7 +6,7 @@ import { estudiante } from '../models/estudiantes';
   providedIn: 'root'
 })
 export class EstudiantesService {
-  private API = 'http://18.216.43.249:4100';
+  private API = 'http://18.216.43.249:4400';
   constructor(private http: HttpClient) { }
   getStudents(){
     return this.http.get(`${this.API}/fotos`);

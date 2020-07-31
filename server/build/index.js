@@ -58,7 +58,7 @@ var Server = /** @class */ (function () {
         this.routes();
     }
     Server.prototype.config = function () {
-        this.app.set('port', process.env.PORT || 3000);
+        this.app.set('port', process.env.PORT || 4100);
         this.app.use(morgan_1.default('dev'));
         this.app.use(cors_1.default());
         this.app.use(express_1.default.json({ limit: '50mb' }));

@@ -203,14 +203,14 @@ this.app.get('/fotos2',(req,res)=>{
      }
            
 }
-async function reconocimiento(arreglo1:any,arreglo2:any){
+function reconocimiento(arreglo1:any,arreglo2:any){
     console.log("inicio de reconocimiento");
     console.log("arreglo 1",arreglo1);
     console.log("arreglo 2",arreglo2);
     
     for(let i in arreglo1){
         for (let j in arreglo2){
-                await new Promise(next=>{
+                new Promise(next=>{
                     const direc = arreglo1[i].Imagen
                     
                     var espacios = direc.split('/')
@@ -237,7 +237,6 @@ async function reconocimiento(arreglo1:any,arreglo2:any){
                                          }
                                      }
                          };
-                         debugger;
                          rekognition.compareFaces(datosrekognition, function(err:any, data:any) {
                             if (err) {
                                 console.log("Rekognition error ",err);
